@@ -16,3 +16,5 @@ build
 CMakeUserPresets.json
 # AppImage builder
 appimage/linuxdeploy.AppImage
+
+built-actions/
