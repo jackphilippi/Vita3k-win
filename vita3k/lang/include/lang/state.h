@@ -307,6 +307,7 @@ struct LangState {
         { "toggle_gui_visibility_description", "Toggles between showing and hiding the GUI at the top of the screen while the app is running." },
         { "miscellaneous", "Miscellaneous" },
         { "toggle_texture_replacement", "Toggle Texture Replacement" },
+        { "keyboard_install_vpk", "Install VPK" },
         { "error", "Error" },
         { "error_duplicate_key", "The key is used for other bindings or it is reserved." }
     };

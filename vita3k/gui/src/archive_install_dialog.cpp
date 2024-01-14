@@ -161,95 +161,26 @@ void draw_archive_install_dialog(GuiState &gui, EmuEnvState &emuenv) {
         ImGui::PopStyleColor();
     } else if (state == "finished") {
         title = indicator["install_complete"];
-        ImGui::SetNextWindowPos(ImVec2(ImGui::GetWindowPos().x + (5.f * SCALE.x), ImGui::GetWindowPos().y + BUTTON_SIZE.y));
-        ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.f);
-        ImGui::BeginChild("##content_installed_list", ImVec2(WINDOW_SIZE.x - (10.f * SCALE.x), WINDOW_SIZE.y - (BUTTON_SIZE.y * 2.f) - (25 * SCALE.y)), false, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoSavedSettings);
-        if (!contents_archives.empty()) {
-            const auto count_content_state = [&](const fs::path path, const bool state) {
-                return std::count_if(contents_archives[path].begin(), contents_archives[path].end(), [&](const ContentInfo &c) {
-                    return c.state == state;
-                });
-            };
-            ImGui::Spacing();
-            const auto compatible_content_str = fmt::format(fmt::runtime(lang["compatible_content"].c_str()), contents_archives.size());
-            ImGui::TextColored(GUI_COLOR_TEXT_TITLE, "%s", compatible_content_str.c_str());
-            ImGui::Spacing();
-            ImGui::Separator();
-            for (const auto &archive : contents_archives) {
-                ImGui::TextWrapped("%s", string_utils::wide_to_utf(archive.first.filename().wstring()).c_str());
-                ImGui::Spacing();
-                const auto count_contents_successed = count_content_state(archive.first, true);
-                if (count_contents_successed) {
-                    const auto successed_install_archive_str = fmt::format(fmt::runtime(lang["successed_install_archive"].c_str()), count_contents_successed);
-                    ImGui::TextColored(GUI_COLOR_TEXT_TITLE, "%s", successed_install_archive_str.c_str());
-                    for (const auto &content : archive.second) {
-                        if (content.state) {
-                            ImGui::TextWrapped("%s [%s]", content.title.c_str(), content.title_id.c_str());
-                            if (content.category.find("gp") != std::string::npos)
-                                ImGui::TextColored(GUI_COLOR_TEXT, "%s %s", lang["update_app"].c_str(), emuenv.app_info.app_version.c_str());
-                        }
+        for (const auto &archive : contents_archives) {
+            for (const auto &content : archive.second) {
+                if (content.state) {
+                    emuenv.app_info.app_category = content.category;
+                    emuenv.app_info.app_title_id = content.title_id;
+                    emuenv.app_info.app_content_id = content.content_id;
+                    if (emuenv.app_info.app_category != "theme")
+                        update_notice_info(gui, emuenv, "content");
+                    if (content.category == "gd") {
+                        init_user_app(gui, emuenv, content.title_id);
+                        save_apps_cache(gui, emuenv);
                     }
                 }
-                const auto count_contents_failed = count_content_state(archive.first, false);
-                if (count_contents_failed) {
-                    ImGui::Spacing();
-                    const auto failed_install_archive_str = fmt::format(fmt::runtime(lang["failed_install_archive"].c_str()), count_contents_failed);
-                    ImGui::TextColored(GUI_COLOR_TEXT_TITLE, "%s", failed_install_archive_str.c_str());
-                    ImGui::Spacing();
-                    for (const auto &content : archive.second) {
-                        if (!content.state)
-                            ImGui::TextWrapped("%s [%s] in path: %s", content.title.c_str(), content.title_id.c_str(), content.path.c_str());
-                    }
-                }
-                ImGui::Spacing();
-                ImGui::Separator();
-                ImGui::Spacing();
             }
         }
-        if (!invalid_archives.empty()) {
-            ImGui::Spacing();
-            const auto not_compatible_content_str = fmt::format(fmt::runtime(lang["not_compatible_content"].c_str()), invalid_archives.size());
-            ImGui::TextColored(GUI_COLOR_TEXT_TITLE, "%s", not_compatible_content_str.c_str());
-            ImGui::Spacing();
-            for (const auto &archive : invalid_archives)
-                ImGui::TextWrapped("%s", archive.filename().string().c_str());
-        }
-        ImGui::EndChild();
-        ImGui::PopStyleVar();
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::Checkbox(lang["delete_archive"].c_str(), &delete_archive_file);
-        ImGui::SetCursorPos(ImVec2(POS_BUTTON, WINDOW_SIZE.y - BUTTON_SIZE.y - (12.f * SCALE.y)));
-        if (ImGui::Button(common["ok"].c_str(), BUTTON_SIZE)) {
-            for (const auto &archive : contents_archives) {
-                for (const auto &content : archive.second) {
-                    if (content.state) {
-                        emuenv.app_info.app_category = content.category;
-                        emuenv.app_info.app_title_id = content.title_id;
-                        emuenv.app_info.app_content_id = content.content_id;
-                        if (emuenv.app_info.app_category != "theme")
-                            update_notice_info(gui, emuenv, "content");
-                        if (content.category == "gd") {
-                            init_user_app(gui, emuenv, content.title_id);
-                            save_apps_cache(gui, emuenv);
-                        }
-                    }
-                }
-                if (delete_archive_file)
-                    fs::remove(archive.first);
-            }
-            if (delete_archive_file && !invalid_archives.empty()) {
-                for (const auto &archive : invalid_archives)
-                    fs::remove(archive);
-            }
-            archive_path = "";
-            gui.file_menu.archive_install_dialog = false;
-            delete_archive_file = false;
-            contents_archives.clear();
-            invalid_archives.clear();
-            type.clear();
-            state.clear();
-        }
+        gui.file_menu.archive_install_dialog = false;
+        contents_archives.clear();
+        invalid_archives.clear();
+        type.clear();
+        state.clear();
     }
     ImGui::EndChild();
     ImGui::PopStyleVar();

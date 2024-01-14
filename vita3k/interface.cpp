@@ -552,6 +552,10 @@ static void toggle_texture_replacement(EmuEnvState &emuenv) {
     emuenv.renderer->get_texture_cache()->set_replacement_state(emuenv.cfg.current_config.import_textures, emuenv.cfg.current_config.export_textures, emuenv.cfg.current_config.export_as_png);
 }
 
+static void keyboard_install_vpk(EmuEnvState &emuenv, GuiState &gui) {
+    gui.file_menu.archive_install_dialog = true;
+}
+
 bool handle_events(EmuEnvState &emuenv, GuiState &gui) {
     refresh_controllers(emuenv.ctrl, emuenv);
     const auto allow_switch_state = !emuenv.io.title_id.empty() && !gui.vita_area.app_close && !gui.vita_area.home_screen && !gui.vita_area.user_management && !gui.configuration_menu.custom_settings_dialog && !gui.configuration_menu.settings_dialog && !gui.controls_menu.controls_dialog && gui::get_sys_apps_state(gui);
@@ -703,6 +707,8 @@ bool handle_events(EmuEnvState &emuenv, GuiState &gui) {
                 switch_full_screen(emuenv);
             if (event.key.keysym.scancode == emuenv.cfg.keyboard_toggle_texture_replacement && !gui.is_key_capture_dropped)
                 toggle_texture_replacement(emuenv);
+            if (event.key.keysym.scancode == emuenv.cfg.keyboard_install_vpk && !gui.is_key_capture_dropped)
+                keyboard_install_vpk(emuenv, gui);
 
             if (sce_ctrl_btn != 0)
                 ui_navigation(sce_ctrl_btn);
