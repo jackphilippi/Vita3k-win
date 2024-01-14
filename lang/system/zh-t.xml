@@ -337,6 +337,7 @@
 		<toggle_gui_visibility_description>在應用程式運行时，在螢幕頂部顯示和隱藏圖形化使用者介面之間切換。</toggle_gui_visibility_description>
 		<miscellaneous>雜項</miscellaneous>
 		<toggle_texture_replacement>切換紋理替換</toggle_texture_replacement>
+		<keyboard_install_vpk>VPK</keyboard_install_vpk>
 		<error>錯誤</error>
 		<error_duplicate_key>此按鈕已繫結至其他按鈕或已被保留。</error_duplicate_key>
 	</controls>

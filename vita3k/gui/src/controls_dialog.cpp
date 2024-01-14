@@ -195,6 +195,7 @@ void draw_controls_dialog(GuiState &gui, EmuEnvState &emuenv) {
         ImGui::TableSetupColumn("button");
         ImGui::TableSetupColumn("mapped_button");
         remapper_button(gui, emuenv, &emuenv.cfg.keyboard_toggle_texture_replacement, lang["toggle_texture_replacement"].c_str());
+        remapper_button(gui, emuenv, &emuenv.cfg.keyboard_install_vpk, lang["keyboard_install_vpk"].c_str());
         ImGui::EndTable();
     }
 

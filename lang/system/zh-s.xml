@@ -337,6 +337,7 @@
 		<toggle_gui_visibility_description>在应用程序运行时，在屏幕顶部显示和隐藏图形用户界面之间切换。</toggle_gui_visibility_description>
 		<miscellaneous>杂项</miscellaneous>
 		<toggle_texture_replacement>切换纹理替换</toggle_texture_replacement>
+		<keyboard_install_vpk>VPK</keyboard_install_vpk>
 		<error>错误</error>
 		<error_duplicate_key>该键已被使用并绑定其他键或被预留。</error_duplicate_key>
 	</controls>

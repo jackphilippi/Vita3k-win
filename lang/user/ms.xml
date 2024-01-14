@@ -330,6 +330,7 @@ Sila sambungkan Kontroler yang serasi dengan SDL2.</not_connected>
 		<toggle_gui_visibility_description>Togol antara menunjukkan dan menyembunyikan GUI di bahagian atas skrin semasa apl sedang berjalan.</toggle_gui_visibility_description>
 		<miscellaneous>Macam-macam</miscellaneous>
 		<toggle_texture_replacement>Togol Penggantian Tekstur</toggle_texture_replacement>
+		<keyboard_install_vpk>VPK</keyboard_install_vpk>
 		<error>Ralat</error>
 		<error_duplicate_key>Key digunakan untuk pengikatan lain atau ia dikhaskan.</error_duplicate_key>
 	</controls>
