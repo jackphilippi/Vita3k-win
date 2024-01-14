@@ -93,14 +93,15 @@ void draw_archive_install_dialog(GuiState &gui, EmuEnvState &emuenv) {
         host::dialog::filesystem::Result result = host::dialog::filesystem::Result::CANCEL;
         // Set file filters for the file picking dialog
         std::vector<host::dialog::filesystem::FileFilter> file_filters = {
-            { "PlayStation Vita commercial software package (NoNpDrm/FAGDec) / PlayStation Vita homebrew software package", { "zip", "vpk" } },
-            { "PlayStation Vita commercial software package (NoNpDrm/FAGDec)", { "zip" } },
             { "PlayStation Vita homebrew software package", { "vpk" } },
         };
         // Call file picking dialog from the native file browser
         result = host::dialog::filesystem::open_file(archive_path, file_filters);
         if (result == host::dialog::filesystem::Result::SUCCESS) {
             state = "install";
+        } else if (result == host::dialog::filesystem::Result::CANCEL) {
+            // User canceled the file picking dialog
+            gui.file_menu.archive_install_dialog = false;
         } else {
             if (result == host::dialog::filesystem::Result::ERROR)
                 LOG_CRITICAL("Error initializing file dialog: {}", host::dialog::filesystem::get_error());

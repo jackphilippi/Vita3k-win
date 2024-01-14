@@ -101,7 +101,7 @@ struct LangState {
             { "open_textures_path", "Open Textures Path" },
             { "install_firmware", "Install Firmware" },
             { "install_pkg", "Install .pkg" },
-            { "install_zip", "Install .zip, .vpk" },
+            { "install_zip", "Install .vpk" },
             { "install_license", "Install License" },
             { "exit", "Exit" }
         };
